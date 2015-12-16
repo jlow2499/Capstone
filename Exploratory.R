@@ -1,4 +1,3 @@
-library(dplyr)
 news <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.news.txt", 10000,encoding="UTF-8")
 blogs <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.blogs.txt", 10000,encoding="UTF-8")
 twitter <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.twitter.txt", 10000,encoding="UTF-8")
@@ -66,16 +65,59 @@ a <- Text_To_Clean_Sentences(text)
 n1 <- Get_Ngrams(a,ngram_size=1)
 n2 <- Get_Ngrams(a,ngram_size=2)
 n3 <- Get_Ngrams(a,ngram_size=3)
+n4 <- Get_Ngrams(a,ngram_size=4)
+n5 <- Get_Ngrams(a,ngram_size=5)
 
-n1 <- table(n1)
-n1 <- as.data.frame(n1) %>%
+n1_df <- table(n1)
+n1_df <- as.data.frame(n1_df) %>%
   arrange(desc(Freq))
 
-n2 <- table(n2)
-n2 <- as.data.frame(n2) %>%
+n2_df <- table(n2)
+n2_df<- as.data.frame(n2_df) %>%
   arrange(desc(Freq))
 
-n3 <- table(n3)
-n3 <- as.data.frame(n3) %>%
+n3_df <- table(n3)
+n3_df <- as.data.frame(n3_df) %>%
   arrange(desc(Freq))
 
+n_all <- c(n1,n2,n3,n4,n5)
+
+# notice the trailing space at end to avoid picking last word
+word <- 'infection '
+
+matches <- c()
+for (sentence in n_all) {
+  # find exact match with double backslash and escape
+  if (grepl(paste0('\\<',word), sentence)) {
+    print(sentence)
+    matches <- c(matches, sentence)
+  }
+}
+
+# find highest probability word
+precision_match <- c()
+for (a_match in matches) {
+  # how many spaces in from of search word
+  precision_match <- c(precision_match,nchar(strsplit(x = a_match, split = word)[[1]][[1]]))
+}
+
+# use highest number and a random of highest for multiples
+best_matched_sentence <- sample(matches[precision_match == max(precision_match)],size = 1)
+
+print(best_matched_sentence)
+
+# split the best matching sentence by the search word
+best_match <- strsplit(x = best_matched_sentence, split = word)[[1]]
+# split second part by spaces and pick first word
+best_match <-  strsplit(x = best_match[[2]], split = " ")[[1]]
+best_match <- best_match[[1]]
+
+print(best_match)
+
+library(ggplot2)
+n <- n3[1:10,]
+
+
+
+plot <- ggplot(n,aes(x=n3,y=Freq)) + geom_bar(stat="identity")
+plot
