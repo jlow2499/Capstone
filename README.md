@@ -1,2 +1,2 @@
 # Capstone
-Currently working on the data science capstone project
+Currently working on the JHU Coursera data science capstone project
