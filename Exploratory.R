@@ -1,8 +1,8 @@
 library(ngram)
 library(dplyr)
-news <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.news.txt", 5000,encoding="UTF-8")
-blogs <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.blogs.txt", 5000,encoding="UTF-8")
-twitter <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.twitter.txt", 5000,encoding="UTF-8")
+news <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.news.txt", 10000,encoding="UTF-8")
+blogs <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.blogs.txt", 10000,encoding="UTF-8")
+twitter <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.twitter.txt", 10000,encoding="UTF-8")
 profanity <- read.csv("C:/Users/193344/Desktop/final/en_US/profanity.txt", header=FALSE, stringsAsFactors=FALSE)
 
 text <- c(news,blogs,twitter)
@@ -10,7 +10,7 @@ rm(news);rm(blogs);rm(twitter)
 
 profanity <- profanity$V1
 
-Text_To_Clean_Sentences <- function(text_blob) {
+Clean <- function(text_blob) {
   
   text_blob <- gsub(pattern=';|\\.|!|\\?', x=text_blob, replacement='ootoo')
    
@@ -43,7 +43,7 @@ Trim <- function( x ) {
   gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
 }
 
-Get_Ngrams <- function(sentence_splits, ngram_size=2) {
+Make_Ngrams <- function(sentence_splits, ngram_size=2) {
   ngrams <- c()
   for (sentence in sentence_splits) {
     sentence <- Trim(sentence)
@@ -55,13 +55,13 @@ Get_Ngrams <- function(sentence_splits, ngram_size=2) {
   return (ngrams)
 }
 
-a <- Text_To_Clean_Sentences(text)
+a <- Clean(text)
 
-n1 <- Get_Ngrams(a,ngram_size=1)
-n2 <- Get_Ngrams(a,ngram_size=2)
-n3 <- Get_Ngrams(a,ngram_size=3)
-n4 <- Get_Ngrams(a,ngram_size=4)
-#n5 <- Get_Ngrams(a,ngram_size=5)
+n1 <- Make_Ngrams(a,ngram_size=1)
+n2 <- Make_Ngrams(a,ngram_size=2)
+n3 <- Make_Ngrams(a,ngram_size=3)
+n4 <- Make_Ngrams(a,ngram_size=4)
+#n5 <- Make_Ngrams(a,ngram_size=5)
 
 n1_df <- table(n1)
 n1_df <- as.data.frame(n1_df) %>%
@@ -82,7 +82,7 @@ n4_df <- as.data.frame(n4_df) %>%
 
 n_all <- c(n2,n3,n4)
 
-word <- 'hey '
+word <- 'you '
 
 matches <- c()
 for (sentence in n_all) {
@@ -104,7 +104,6 @@ for (a_match in matches) {
 final_matched_sentence <- sample(matches[split_match == max(split_match)],size = 1)
 
 print(final_matched_sentence)
-
 
 final_match <- strsplit(x = final_matched_sentence, split = word)[[1]]
 final_match <-  strsplit(x = final_match[[2]], split = " ")[[1]]
