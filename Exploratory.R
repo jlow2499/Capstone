@@ -1,9 +1,9 @@
 library(ngram)
 library(dplyr)
-news <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.news.txt", 10000,encoding="UTF-8")
-blogs <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.blogs.txt", 10000,encoding="UTF-8")
-twitter <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.twitter.txt", 10000,encoding="UTF-8")
-profanity <- read.csv("C:/Users/193344/Desktop/final/en_US/profanity.txt", header=FALSE, stringsAsFactors=FALSE)
+news <- readLines("C:/Users/Jeremiah Lowhorn/Desktop/final/en_US/en_US.news.txt", 10000,encoding="UTF-8")
+blogs <- readLines("C:/Users/Jeremiah Lowhorn/Desktop/final/en_US/en_US.blogs.txt", 10000,encoding="UTF-8")
+twitter <- readLines("C:/Users/Jeremiah Lowhorn/Desktop/final/en_US/en_US.twitter.txt", 10000,encoding="UTF-8")
+profanity <- read.csv("C:/Users/Jeremiah Lowhorn/Desktop/final/en_US/profanity.txt", header=FALSE, stringsAsFactors=FALSE)
 
 text <- c(news,blogs,twitter)
 rm(news);rm(blogs);rm(twitter)
