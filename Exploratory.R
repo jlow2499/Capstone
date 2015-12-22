@@ -12,28 +12,30 @@ profanity <- profanity$V1
 
 Clean <- function(text_blob) {
   
-  text_blob <- gsub(pattern=';|\\.|!|\\?', x=text_blob, replacement='ootoo')
+  text_blob <- gsub(';|\\.|!|\\?', 
+                    text_blob, 
+                    'ootoo')
    
-  text_blob <- gsub(pattern=paste0('\\<',profanity,collapse="|"),
-                    x=text_blob,
-                    replacement = "expletive ",
+  text_blob <- gsub(paste0('\\<',profanity,collapse="|"),
+                    text_blob,
+                     "expletive ",
                     ignore.case=TRUE)
   
-  text_blob <- gsub(pattern="[^[:alpha:]]",
-                    x=text_blob,
-                    replacement = ' ')
+  text_blob <- gsub("[^[:alpha:]]",
+                    text_blob,
+                     ' ')
   
   text_blob <- tolower(text_blob)
 
-  text_blob <- gsub(pattern="\\W*\\b\\w{1,2}\\b",
-                    x=text_blob,
-                    replacement=' ')
+  text_blob <- gsub("\\W*\\b\\w{1,2}\\b",
+                    text_blob,
+                    ' ')
   
-  text_blob <- gsub(pattern="\\s+",
-                    x=text_blob, 
-                    replacement=' ')
+  text_blob <- gsub("\\s+",
+                    text_blob, 
+                    ' ')
   
-  sentence_vector <- unlist(strsplit(x=text_blob,
+  sentence_vector <- unlist(strsplit(text_blob,
                                      split='ootoo',
                                      fixed = TRUE))
   return (sentence_vector)
@@ -43,12 +45,12 @@ Trim <- function( x ) {
   gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
 }
 
-Make_Ngrams <- function(sentence_splits, ngram_size=2) {
+Make_Ngrams <- function(sentence_splits, size=2) {
   ngrams <- c()
   for (sentence in sentence_splits) {
     sentence <- Trim(sentence)
-    if ((nchar(sentence) > 0) && (sapply(gregexpr("\\W+", sentence), length) >= ngram_size)) {
-      ngs <- ngram(sentence , n=ngram_size)
+    if ((nchar(sentence) > 0) && (sapply(gregexpr("\\W+", sentence), length) >= size)) {
+      ngs <- ngram(sentence , n=size)
       ngrams <- c(ngrams, get.ngrams(ngs))
     }
   }
@@ -57,11 +59,11 @@ Make_Ngrams <- function(sentence_splits, ngram_size=2) {
 
 a <- Clean(text)
 
-n1 <- Make_Ngrams(a,ngram_size=1)
-n2 <- Make_Ngrams(a,ngram_size=2)
-n3 <- Make_Ngrams(a,ngram_size=3)
-n4 <- Make_Ngrams(a,ngram_size=4)
-#n5 <- Make_Ngrams(a,ngram_size=5)
+n1 <- Make_Ngrams(a,size=1)
+n2 <- Make_Ngrams(a,size=2)
+n3 <- Make_Ngrams(a,size=3)
+n4 <- Make_Ngrams(a,size=4)
+#n5 <- Make_Ngrams(a,size=5)
 
 n1_df <- table(n1)
 n1_df <- as.data.frame(n1_df) %>%
@@ -82,7 +84,7 @@ n4_df <- as.data.frame(n4_df) %>%
 
 n_all <- c(n2,n3,n4)
 
-word <- 'you '
+word <- 'montecristo '
 
 matches <- c()
 for (sentence in n_all) {
