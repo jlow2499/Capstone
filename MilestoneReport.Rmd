@@ -8,7 +8,7 @@ output: html_document
 #Synopsis
 This milestone report is for the Coursera Data Science Capstone project. The purpose of the overall project is to construct an application that predicts the next word in a user defined sentence. We are provided with a text corpus that we are to perform exploratory analysis upon and use in model building for our word prediction algorithm. 
 
-The text contains special characters, unneeded spaces, and profanity that must first be removed. R's base package functions and regular expressions are used in this analysis to clean the data and make it ready to split into n-gram models. N-grams are parsed out groups of words in sentences with n items from the sentence. For example the sentence "How are you today?" could be split into the bigrams "How are" or "are you”. These n-grams will be used to predict the next word in the sentence based upon the user's input. 
+The text contains special characters, unneeded spaces, and profanity that must first be removed. The text comes from a document of Tweets, news articles, and blog posts. R's base package functions and regular expressions are used in this analysis to clean the data and make it ready to split into n-gram models. N-grams are parsed out groups of words in sentences with n items from the sentence. For example the sentence "How are you today?" could be split into the bigrams "How are" or "are you”. These n-grams will be used to predict the next word in the sentence based upon the user's input. 
 
 Note: Due to system memory limits only 10,000 lines from each file will be read into this analysis. 
 
@@ -199,7 +199,7 @@ Quadplot
 ```
 
 #Modeling & Next Steps
-My current working model takes the sampled corpus as a character vector and finds all of the matches of the previous 1, 2, 3, or 4 words. It then searches the vector for all possible matches and returns the next possible word based upon frequency in the vector. This approach is extraordinarily inefficient and does not produce the most accurate results. Additionally cleaning takes longer than desired with the regex I am using. I need to explore the TM package and other in order to find a more efficient way to clean the text and remove profanity words. 
+My current working model takes the sampled corpus as a character vector and finds all of the matches of the previous 1, 2, 3, or 4 words. It then searches the vector for all possible matches and returns the next possible word based upon frequency in the vector. This approach is extraordinarily inefficient and does not produce the most accurate results. Additionally cleaning takes longer than desired with the regex I am using. I need to explore the TM package and others in order to find a more efficient way to clean the text and remove profanity words. 
 
 My idea(s) for the new model are as follows:
 
