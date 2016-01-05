@@ -66,6 +66,7 @@ n4_df <- as.data.frame(n4_df) %>%
 n5_df <- table(n5)
 n5_df <- as.data.frame(n5_df) %>%
   arrange(desc(Freq))
+  
 n1_df$n1 <- as.character(n1_df$n1)
 n2_df$n2 <- as.character(n2_df$n2)
 n3_df$n3 <- as.character(n3_df$n3)
@@ -78,7 +79,7 @@ three_gram <-data.frame((str_split_fixed(n3_df$n3, ' (?=[^ ]+$)',2)),stringsAsFa
 two_gram <-data.frame((str_split_fixed(n2_df$n2, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
 
 
-sentence <- "Guy at my table's wife got up to go to the bathroom and I asked about dessert and he started telling me about his"
+sentence <- "you are a big piece"
 sentence <- str_replace_all(sentence, "[[:punct:]]", "")
 sentence <- tolower(sentence)
 sentence <- gsub(pattern="\\s+", x=sentence, replacement=' ')
@@ -92,8 +93,23 @@ sentence <- data.frame(sentence,stringsAsFactors=FALSE)
 
 
 word <- c(paste(sentence$sentence,collapse=" "))
-word2 <- c(paste(sentence[2,1],sentence[3,1],sentence[4,1],collapse=" "))
-word3 <- c(paste(sentence[2,1],sentence[3,1],collapse=" "))
+if(length(sentence$sentence)==4){
+  word2 <- c(paste(sentence[2,1],sentence[3,1],sentence[4,1],collapse=" "))
+  word3 <- c(paste(sentence[3,1],sentence[4,1],collapse=" "))
+  word4 <- c(paste(sentence[4,1],collapse=" "))
+} else if(length(sentence$sentence)==3){
+  word2 <- c(paste(sentence[1,1],sentence[2,1],sentence[3,1],collapse=" "))
+  word3 <- c(paste(sentence[2,1],sentence[3,1],collapse=" "))
+  word4 <- c(paste(sentence[1,1],collapse=" "))  
+} else if(length(sentence$sentence)==2){
+  word2 <- c(paste(sentence[1,1],sentence[2,1],collapse=" "))
+  word3 <- c(paste(sentence[2,1],collapse=" "))
+  word4 <- NA
+} else{
+  word2 <- c(paste(sentence[1,1],collapse=" "))
+  word3 <- NA
+  word4 <- NA
+}
 
 if(length(sentence$sentence) == 4){
   match <- five_gram[five_gram$X1 == word,]
@@ -120,11 +136,12 @@ if(is.na(match) == TRUE && length(sentence$sentence)>=3){
   match <- match[1,2]
 }
 
+if(is.na(match) == TRUE && length(sentence$sentence)>=2){
+  match <- two_gram[two_gram$X1 == word4,]
+  match <- match[1,2]
+}
+
 if(is.na(match) == TRUE){
   match <- "the"
 }
 match
-
-  
-  
-
