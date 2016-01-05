@@ -14,7 +14,7 @@ rm(news);rm(blogs);rm(twitter)
 profanity <- profanity$V1
 
 text <- gsub(pattern=';|\\.|!|\\?', x=text, replacement='ootoo')
-text <- str_replace_all(text, "[[:punct:]]", "")
+text <- gsub(pattern="[[:punct:]]",x=text,replacement="")
 text <- gsub(pattern="[^[:alpha:]]", x=text, replacement = ' ')
 text <- tolower(text)
 text <- gsub(pattern="\\W*\\b\\w{1,2}\\b", x=text, replacement=' ')
