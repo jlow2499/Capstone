@@ -5,9 +5,19 @@ library(stringr)
 news <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.news.txt", 20000,encoding="UTF-8")
 blogs <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.blogs.txt", 20000,encoding="UTF-8")
 twitter <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.twitter.txt", 20000,encoding="UTF-8")
+
+sw1 <- readLines("C:/Users/193344/Desktop/final/en_US/anewhope.txt", encoding="UTF-8")
+sw2 <- readLines("C:/Users/193344/Desktop/final/en_US/attackoftheclones.txt", encoding="UTF-8")
+sw3 <- readLines("C:/Users/193344/Desktop/final/en_US/returnofthejedi.txt", encoding="UTF-8")
+sw4 <- readLines("C:/Users/193344/Desktop/final/en_US/revengeofthesith.txt", encoding="UTF-8")
+sw5 <- readLines("C:/Users/193344/Desktop/final/en_US/theempirestrikesback.txt", encoding="UTF-8")
+sw6 <- readLines("C:/Users/193344/Desktop/final/en_US/theforceawakens.txt", encoding="UTF-8")
+sw7 <- readLines("C:/Users/193344/Desktop/final/en_US/thephantommenace.txt", encoding="UTF-8")
+
+
 profanity <- read.csv("C:/Users/193344/Desktop/final/en_US/profanity.txt", header=FALSE, stringsAsFactors=FALSE)
 
-text <- c(news,twitter,blogs)
+text <- c(news,twitter,blogs,sw1,sw2,sw3,sw4,sw5,sw6,sw7)
 
 rm(news);rm(blogs);rm(twitter)
 
