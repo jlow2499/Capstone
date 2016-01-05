@@ -59,7 +59,6 @@ shinyServer(function(input, output) {
     } else{
       match <- NA
     }
-    
     if(is.na(match) == TRUE && length(sentence$sentence)==4){
       match <- four_gram[four_gram$X1 == word2,]
       match <- match[1,2]
@@ -68,13 +67,10 @@ shinyServer(function(input, output) {
       match <- three_gram[three_gram$X1 == word3,]
       match <- match[1,2]
     }
-    
     if(is.na(match) == TRUE && length(sentence$sentence)>=2){
       match <- two_gram[two_gram$X1 == word4,]
       match <- match[1,2]
     }
-    
-    
     if(is.na(match) == TRUE){
       match <- "the"
     }
