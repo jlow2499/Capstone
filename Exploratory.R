@@ -67,11 +67,9 @@ n2_df$n2 <- as.character(n2_df$n2)
 n3_df$n3 <- as.character(n3_df$n3)
 n4_df$n4 <- as.character(n4_df$n4)
 
-
 four_gram <-data.frame((str_split_fixed(n4_df$n4, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
 three_gram <-data.frame((str_split_fixed(n3_df$n3, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
 two_gram <-data.frame((str_split_fixed(n2_df$n2, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
-
 
 sentence <- "When you breathe, I want to be the air for you. I'll be there for you, I'd live and I'd"
 sentence <- str_replace_all(sentence, "[[:punct:]]", "")
@@ -84,7 +82,6 @@ sentence <- if(length(sentence$x) >=3) {
     tail(sentence)}
 sentence <- unlist(sentence)
 sentence <- data.frame(sentence,stringsAsFactors=FALSE)
-
 
 word <- c(paste(sentence$sentence,collapse=" "))
 word2 <- c(paste(sentence[2,1],sentence[3,1],collapse=" "))
@@ -110,5 +107,4 @@ if(is.na(match) == TRUE & length(sentence$sentence)==3){
 if(is.na(match) == TRUE){
   match <- "the"
 }
-
 
