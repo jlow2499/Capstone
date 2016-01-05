@@ -107,7 +107,6 @@ if(is.na(match) == TRUE & length(sentence$sentence)==3){
   match <- match[1,2]
 } 
 
-
 if(is.na(match) == TRUE){
   match <- "the"
 }
