@@ -18,7 +18,8 @@ body <- dashboardBody(
             fluidRow((verbatimTextOutput("sentence")))
     ),
     tabItem(tabName = "info",
-            column(4,box("This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used "))
+            column(10,fluidRow(box(title="Methodology","This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used to subset dataframes where the first column is n-1 words and the second column is the last word in the ngram.")),
+                   fluidRow(box(title="Stop Words","Stop words are words that refer to the most common words in a language. In our case words such as 'the' & 'and' would be considered stop words. For this application stop words are not removed from the ngrams unless the previous word in the sentence is a stop word. Then the dataframes are reactively subset to remove the stop words")))
     )
     
   )
