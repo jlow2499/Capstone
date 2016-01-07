@@ -14,7 +14,8 @@ body <- dashboardBody(
     tabItem(tabName = "word",
             textInput("text", label = h2("Next Word Predictor"), value = "Hello how are"),
          #   submitButton(text = "Predict next word..."),
-            fluidRow((verbatimTextOutput("value")))
+            fluidRow((verbatimTextOutput("value"))),
+            fluidRow((verbatimTextOutput("sentence")))
     ),
     tabItem(tabName = "info",
             column(4,box("This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used "))
@@ -39,10 +40,11 @@ server <- function(input, output) {
   output$value <- renderPrint({ paste(tolower(input$text), find_next_word(tolower(input$text))) })
   
   find_next_word <- function(sentence) { 
-    lastword <- word(sentence,-1)
     sentence <- str_replace_all(sentence, "[[:punct:]]", "")
     sentence <- tolower(sentence)
+    sentence <- sub("\\s+$", "", sentence)
     sentence <- gsub(pattern="\\s+", x=sentence, replacement=' ')
+    lastword <- word(sentence,-1)
     
     sentence<-data.frame(setNames(strsplit(x = sentence, split = " "),nm="x"),stringsAsFactors=FALSE)
     sentence <- if(length(sentence$x) >=4) {
@@ -129,6 +131,6 @@ server <- function(input, output) {
   }
   
   output$value <- renderPrint({ find_next_word(tolower(input$text)) })
-  
+  output$sentence <- renderPrint({ paste((input$text),find_next_word(tolower(input$text))) })
 }
 shinyApp(ui, server)
