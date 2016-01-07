@@ -12,9 +12,9 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
-            textInput("text", label = h2("Next Word Predictor"), value = "Hello how are"),
+            column(10,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
          #   submitButton(text = "Predict next word..."),
-            column(10,fluidRow(box(title="Word Prediction",(verbatimTextOutput("value")))),
+            fluidRow(box(title="Word Prediction",(verbatimTextOutput("value")))),
             fluidRow(box(title="Sentence Prediction",(verbatimTextOutput("sentence")))))
     ),
     tabItem(tabName = "info",
