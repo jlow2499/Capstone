@@ -14,8 +14,8 @@ body <- dashboardBody(
     tabItem(tabName = "word",
             textInput("text", label = h2("Next Word Predictor"), value = "Hello how are"),
          #   submitButton(text = "Predict next word..."),
-            fluidRow((verbatimTextOutput("value"))),
-            fluidRow((verbatimTextOutput("sentence")))
+            column(10,fluidRow(box(title="Word Prediction",(verbatimTextOutput("value")))),
+            fluidRow(box(title="Sentence Prediction",(verbatimTextOutput("sentence")))))
     ),
     tabItem(tabName = "info",
             column(10,fluidRow(box(title="Methodology","This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used to subset dataframes where the first column is n-1 words and the second column is the last word in the ngram.")),
