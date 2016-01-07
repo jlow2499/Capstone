@@ -7,11 +7,23 @@ blogs <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.blogs.txt", 10000,
 twitter <- readLines("C:/Users/193344/Desktop/final/en_US/en_US.twitter.txt", 10000,encoding="UTF-8")
 stopwords <- read.table("C:/Users/193344/Desktop/final/en_US/stopwords.csv", quote="\"", stringsAsFactors=FALSE)
 stopwords <- str_replace_all(stopwords$V1, "[[:punct:]]", "")
+
+
+#sw1 <- readLines("C:/Users/193344/Desktop/final/en_US/anewhope.txt", encoding="UTF-8")
+#sw2 <- readLines("C:/Users/193344/Desktop/final/en_US/attackoftheclones.txt", encoding="UTF-8")
+#sw3 <- readLines("C:/Users/193344/Desktop/final/en_US/returnofthejedi.txt", encoding="UTF-8")
+#sw4 <- readLines("C:/Users/193344/Desktop/final/en_US/revengeofthesith.txt", encoding="UTF-8")
+#sw5 <- readLines("C:/Users/193344/Desktop/final/en_US/theempirestrikesback.txt", encoding="UTF-8")
+#sw6 <- readLines("C:/Users/193344/Desktop/final/en_US/theforceawakens.txt", encoding="UTF-8")
+#sw7 <- readLines("C:/Users/193344/Desktop/final/en_US/thephantommenace.txt", encoding="UTF-8")
+
+
 profanity <- read.csv("C:/Users/193344/Desktop/final/en_US/profanity.txt", header=FALSE, stringsAsFactors=FALSE)
 
 text <- c(news,twitter,blogs)
 
 rm(news);rm(blogs);rm(twitter)
+#rm(sw1);rm(sw2);rm(sw3);rm(sw4);rm(sw5);rm(sw6);rm(sw7)
 
 profanity <- profanity$V1
 
@@ -42,10 +54,13 @@ Make_Ngrams <- function(sentence_splits, size=2) {
   return (ngrams)
 }
 
+
 n2 <- Make_Ngrams(text,size=2)
 n3 <- Make_Ngrams(text,size=3)
 n4 <- Make_Ngrams(text,size=4)
 n5 <- Make_Ngrams(text,size=5)
+
+
 
 n2_df <- table(n2)
 n2_df<- as.data.frame(n2_df) %>%
@@ -63,6 +78,7 @@ n5_df <- table(n5)
 n5_df <- as.data.frame(n5_df) %>%
   arrange(desc(Freq))
 
+
 n2_df$n2 <- as.character(n2_df$n2)
 n3_df$n3 <- as.character(n3_df$n3)
 n4_df$n4 <- as.character(n4_df$n4)
@@ -73,11 +89,13 @@ four_gram <-data.frame((str_split_fixed(n4_df$n4, ' (?=[^ ]+$)',2)),stringsAsFac
 three_gram <-data.frame((str_split_fixed(n3_df$n3, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
 two_gram <-data.frame((str_split_fixed(n2_df$n2, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
 
-sentence <- "you are a big piece"
-lastword <- word(sentence,-1)
+
+sentence <- "you are a big piece "
 sentence <- str_replace_all(sentence, "[[:punct:]]", "")
 sentence <- tolower(sentence)
+sentence <- sub("\\s+$", "", sentence)
 sentence <- gsub(pattern="\\s+", x=sentence, replacement=' ')
+lastword <- word(sentence,-1)
 
 sentence<-data.frame(setNames(strsplit(x = sentence, split = " "),nm="x"),stringsAsFactors=FALSE)
 sentence <- if(length(sentence$x) >=4) {
