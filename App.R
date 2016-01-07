@@ -1,6 +1,8 @@
 library(shiny)
 library(shinydashboard)
 
+attach("myWorkspace.RData")
+
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Word Predictor", tabName = "word", icon = icon("dashboard")),
