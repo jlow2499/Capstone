@@ -1,8 +1,6 @@
 library(shiny)
 library(shinydashboard)
 
-attach("myWorkspace.RData")
-
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Word Predictor", tabName = "word", icon = icon("dashboard")),
@@ -20,8 +18,14 @@ body <- dashboardBody(
             fluidRow(box(title="Sentence Prediction",(verbatimTextOutput("sentence")))))
     ),
     tabItem(tabName = "info",
-            column(10,fluidRow(box(title="Methodology","This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used to subset dataframes where the first column is n-1 words and the second column is the last word in the ngram.")),
-                   fluidRow(box(title="Stop Words","Stop words are words that refer to the most common words in a language. In our case words such as 'the' & 'and' would be considered stop words. For this application stop words are not removed from the ngrams unless the previous word in the sentence is a stop word. Then the dataframes are reactively subset to remove the stop words")))
+            column(12,
+                   box(title="Synopsis","This application is for the Johns Hopkins Coursera Data Science Capstone. We are provided with a text corpus that we are to perform exploratory analysis upon and use in model building for our word prediction algorithm which is found in the 'Word predictor' tab. The text contains special characters, unneeded spaces, and profanity that must first be removed. The text comes from a document of Tweets, news articles, and blog posts. R's base package functions and regular expressions are used in this analysis to clean the data and make it ready to split into n-gram models. The n-grams are used to predict the next word in the sentence based upon the user's input."),
+                   (box(title="Methodology","This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used to subset dataframes where the first column is n-1 words and the second column is the last word in the ngram.")),
+                   (box(title="Stop Words","Stop words are words that refer to the most common words in a language. In our case words such as 'the' & 'and' would be considered stop words. For this application stop words are not removed from the ngrams unless the previous word in the sentence is a stop word. Then the dataframes are reactively subset to remove the stop words")),
+                   (box(title="N-Gram Definition","In the fields of computational linguistics and probability, an n-gram is a contiguous sequence of n items from a given sequence of text or speech. The items can be phonemes, syllables, letters, words or base pairs according to the application.",
+                                "                 ",tags$a(href="https://en.wikipedia.org/wiki/N-gram","Wikipedia"))),
+            (box(title="Natural Language Processing","Natural language processing (NLP) is a field of computer science, artificial intelligence, and computational linguistics concerned with the interactions between computers and human (natural) languages",
+                                    tags$a(href="https://en.wikipedia.org/wiki/Natural_language_processing","Wikipedia"))))
     )
     
   )
