@@ -1,5 +1,7 @@
 library(shiny)
 library(shinydashboard)
+library(stringr)
+library(dplyr)
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
@@ -12,7 +14,7 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
-            column(10,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
+            column(12,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
          #   submitButton(text = "Predict next word..."),
             fluidRow(box(title="Word Prediction",(verbatimTextOutput("value")))),
             fluidRow(box(title="Sentence Prediction",(verbatimTextOutput("sentence")))))
@@ -126,9 +128,8 @@ server <- function(input, output) {
       match <- match[1,2]
     }
     
-    if(is.na(match) == TRUE && length(sentence$sentence)>=2){
-      match <- two[two$X1 == word2,]
-      match <- match[1,2]
+    if(is.na(match) == TRUE && length(sentence$sentence)>=1){
+      match <- "and"
     }
     
     if(is.na(match) == TRUE){
