@@ -14,10 +14,12 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
-            column(12,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
-         #   submitButton(text = "Predict next word..."),
-            fluidRow(box(title="Word Prediction",(verbatimTextOutput("value")))),
-            fluidRow(box(title="Sentence Prediction",(verbatimTextOutput("sentence")))))
+            column(4,
+                   fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence."))),
+            column(8,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
+        #    fluidRow(box(title="Word Additions","Press the button in the word prediction box to add it to the sentence.")),
+            fluidRow(box(title="Word Prediction",actionButton("addword",textOutput("word")))),
+            fluidRow(box(title="Sentence Prediction",(textOutput("sentence")))))
     ),
     tabItem(tabName = "info",
             column(12,
@@ -40,13 +42,7 @@ ui <- dashboardPage(
   body
 )
 
-server <- function(input, output) {
-  
-  datasetInput <- reactive({
-    find_next_word(tolower(input$current_sentence))
-  })
-  
-  output$value <- renderPrint({ paste(tolower(input$text), find_next_word(tolower(input$text))) })
+server <- function(input, output, session) {
   
   find_next_word <- function(sentence) { 
     sentence <- str_replace_all(sentence, "[[:punct:]]", "")
@@ -138,7 +134,17 @@ server <- function(input, output) {
     match
   }
   
+  output$word <- renderText({find_next_word(tolower(input$text)) })
   output$value <- renderPrint({ find_next_word(tolower(input$text)) })
-  output$sentence <- renderPrint({ paste((input$text),find_next_word(tolower(input$text))) })
+  output$sentence <- renderText({ paste((input$text),find_next_word(tolower(input$text))) })
+  
+  
+  observe({
+    if (input$addword == 0) return()
+    isolate({
+      updateTextInput(session, "text",
+                      value = paste(input$text, find_next_word(tolower(input$text))))
+    })
+  })
 }
 shinyApp(ui, server)
