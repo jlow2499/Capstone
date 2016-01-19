@@ -15,7 +15,9 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
             column(4,
-                   fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence."))),
+                   fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence.")),
+                   fluidRow(box(title="Add/Remove Datasets",
+                                checkboxGroupInput("rmv","Add/Remove Datasets",choices=c("Twitter","News","Blogs"),selected=c("Twitter","News","Blogs"))))),
             column(8,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
         #    fluidRow(box(title="Word Additions","Press the button in the word prediction box to add it to the sentence.")),
             fluidRow(box(title="Word Prediction",actionButton("addword",textOutput("word")))),
@@ -43,6 +45,99 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output, session) {
+  
+  string <- reactive({
+    string <- c(input$rmv[1],input$rmv[2],input$rmv[3])
+    string
+  })
+  
+  
+  five_gram <- reactive({
+    if(string()%in%"Twitter"){
+      twitter <- twitter_n5
+    } else{
+      twitter <- NULL
+    }
+    if(string()%in%"Blogs"){
+      blogs <- blogs_n5
+    } else{
+      blogs <- NULL
+    }
+    if(string()%in%"News"){
+      news <- news_n5
+    } else{
+      news <- NULL
+    }
+    five_gram <- rbind(twitter,blogs,news) %>%
+      arrange(desc(Freq))
+    five_gram
+  })
+  
+  four_gram <- reactive({
+    if(string()%in%"Twitter"){
+      twitter <- twitter_n4
+    } else{
+      twitter <- NULL
+    }
+    if(string()%in%"Blogs"){
+      blogs <- blogs_n4
+    } else{
+      blogs <- NULL
+    }
+    if(string()%in%"News"){
+      news <- news_n4
+    } else{
+      news <- NULL
+    }
+    four_gram <- rbind(twitter,blogs,news) %>%
+      arrange(desc(Freq))
+    four_gram
+  })
+  
+  three_gram <- reactive({
+    if(string()%in%"Twitter"){
+      twitter <- twitter_n3
+    } else{
+      twitter <- NULL
+    }
+    if(string()%in%"Blogs"){
+      blogs <- blogs_n3
+    } else{
+      blogs <- NULL
+    }
+    if(string()%in%"News"){
+      news <- news_n3
+    } else{
+      news <- NULL
+    }
+    three_gram <- rbind(twitter,blogs,news) %>%
+      arrange(desc(Freq))
+    three_gram
+  })
+  
+  two_gram <- reactive({
+    if(string()%in%"Twitter"){
+      twitter <- twitter_n2
+    } else{
+      twitter <- NULL
+    }
+    if(string()%in%"Blogs"){
+      blogs <- blogs_n2
+    } else{
+      blogs <- NULL
+    }
+    if(string()%in%"News"){
+      news <- news_n2
+    } else{
+      news <- NULL
+    }
+    two_gram <- rbind(twitter,blogs,news) %>%
+      arrange(desc(Freq))
+    two_gram
+  })
+  
+  
+  
   
   find_next_word <- function(sentence) { 
     sentence <- str_replace_all(sentence, "[[:punct:]]", "")
@@ -78,15 +173,15 @@ server <- function(input, output, session) {
     }
     
     if((lastword %in% stopwords)==TRUE){
-      five <- five_gram[!five_gram$X2 %in% stopwords,]
-      four <- four_gram[!four_gram$X2 %in% stopwords,]
-      three <- three_gram[!three_gram$X2 %in% stopwords,]
-      two <- two_gram[!two_gram$X2 %in% stopwords,]
+      five <- five_gram()[!five_gram()$X2 %in% stopwords,]
+      four <- four_gram()[!four_gram()$X2 %in% stopwords,]
+      three <- three_gram()[!three_gram()$X2 %in% stopwords,]
+      two <- two_gram()[!two_gram()$X2 %in% stopwords,]
     } else{
-      five <- five_gram
-      four <- four_gram
-      three <- three_gram
-      two <- two_gram
+      five <- five_gram()
+      four <- four_gram()
+      three <- three_gram()
+      two <- two_gram()
     }
     
     if(length(sentence$sentence) == 4){
