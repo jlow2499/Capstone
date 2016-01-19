@@ -1,83 +1,89 @@
-five_gram <- reactive({
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
-    twitter <- twitter_n5
+find_next_word <- function(sentence) { 
+  sentence <- str_replace_all(sentence, "[[:punct:]]", "")
+  sentence <- tolower(sentence)
+  sentence <- sub("\\s+$", "", sentence)
+  sentence <- gsub(pattern="\\s+", x=sentence, replacement=' ')
+  lastword <- word(sentence,-1)
+  
+  sentence<-data.frame(setNames(strsplit(x = sentence, split = " "),nm="x"),stringsAsFactors=FALSE)
+  sentence <- if(length(sentence$x) >=4) {
+    tail(sentence,4)} else{
+      tail(sentence)}
+  sentence <- unlist(sentence)
+  sentence <- data.frame(sentence,stringsAsFactors=FALSE)
+  
+  word <- c(paste(sentence$sentence,collapse=" "))
+  if(length(sentence$sentence)==4){
+    word2 <- c(paste(sentence[2,1],sentence[3,1],sentence[4,1],collapse=" "))
+    word3 <- c(paste(sentence[3,1],sentence[4,1],collapse=" "))
+    word4 <- c(paste(sentence[4,1],collapse=" "))
+  } else if(length(sentence$sentence)==3){
+    word2 <- c(paste(sentence[1,1],sentence[2,1],sentence[3,1],collapse=" "))
+    word3 <- c(paste(sentence[2,1],sentence[3,1],collapse=" "))
+    word4 <- c(paste(sentence[3,1],collapse=" "))  
+  } else if(length(sentence$sentence)==2){
+    word2 <- c(paste(sentence[1,1],sentence[2,1],collapse=" "))
+    word3 <- c(paste(sentence[2,1],collapse=" "))
+    word4 <- NA
   } else{
-    twitter <- NULL
+    word2 <- c(paste(sentence[1,1],collapse=" "))
+    word3 <- NA
+    word4 <- NA
   }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    blogs <- blogs_n5
+  
+  if((lastword %in% stopwords)==TRUE){
+    five <- five_gram()[!five_gram()$X2 %in% stopwords,]
+    four <- four_gram()[!four_gram()$X2 %in% stopwords,]
+    three <- three_gram()[!three_gram()$X2 %in% stopwords,]
+    two <- two_gram()[!two_gram()$X2 %in% stopwords,]
   } else{
-    blogs <- NULL
+    five <- five_gram()
+    four <- four_gram()
+    three <- three_gram()
+    two <- two_gram()
   }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    news <- news_n5
+  
+  if(length(sentence$sentence) == 4){
+    match <- five[five$X1 == word,]
+    match <- match[1,2]
+  } else if(length(sentence$sentence) == 3){
+    match <- four[four$X1 == word,]
+    match <- match[1,2]
+  } else if(length(sentence$sentence) == 2){
+    match <- three[three$X1 == word,]
+    match <- match[1,2]
+  } else if(length(sentence$sentence)==1){
+    match <- two[two$X1 == word,]
+    match <- match[1,2]
   } else{
-    news <- NULL
+    match <- NA
   }
-  five_gram <- rbind(twitter,blogs,news) %>%
-    arrange(desc(Freq))
-  five_gram
-})
-
-four_gram <- reactive({
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
-    twitter <- twitter_n4
-  } else{
-    twitter <- NULL
+  
+  if(is.na(match) == TRUE && length(sentence$sentence)==4){
+    match <- four[four$X1 == word2,]
+    match <- match[1,2]
   }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    blogs <- blogs_n4
-  } else{
-    blogs <- NULL
+  if(is.na(match) == TRUE && length(sentence$sentence)>=3){
+    match <- three[three$X1 == word3,]
+    match <- match[1,2]
   }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    news <- news_n4
-  } else{
-    news <- NULL
+  
+  if(is.na(match) == TRUE && length(sentence$sentence)>=2){
+    match <- two[two$X1 == word4,]
+    match <- match[1,2]
   }
-  four_gram <- rbind(twitter,blogs,news) %>%
-    arrange(desc(Freq))
-  four_gram
-})
-
-three_gram <- reactive({
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
-    twitter <- twitter_n3
-  } else{
-    twitter <- NULL
+  
+  if(is.na(match) == TRUE && length(sentence$sentence)>=2){
+    match <- two[two$X1 == word3,]
+    match <- match[1,2]
   }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    blogs <- blogs_n3
-  } else{
-    blogs <- NULL
+  
+  if(is.na(match) == TRUE && length(sentence$sentence)>=1){
+    match <- "and"
   }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    news <- news_n3
-  } else{
-    news <- NULL
+  
+  if(is.na(match) == TRUE){
+    match <- "the"
   }
-  three_gram <- rbind(twitter,blogs,news) %>%
-    arrange(desc(Freq))
-  three_gram
-})
-
-two_gram <- reactive({
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
-    twitter <- twitter_n2
-  } else{
-    twitter <- NULL
-  }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    blogs <- blogs_n2
-  } else{
-    blogs <- NULL
-  }
-  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
-    news <- news_n2
-  } else{
-    news <- NULL
-  }
-  two_gram <- rbind(twitter,blogs,news) %>%
-    arrange(desc(Freq))
-  two_gram
-})
+  match
+}
