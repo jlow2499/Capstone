@@ -7,8 +7,10 @@ build_tables <- function(text,size) {
     arrange(desc(Freq))
   
   n2_df$n2 <- as.character(n2_df$n2)
+  Freq <- n2_df$Freq
   
   table <-data.frame((str_split_fixed(n2_df$n2, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
+  table <- cbind(table,Freq)
   table
 }
 
