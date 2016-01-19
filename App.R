@@ -15,9 +15,11 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
             column(4,
+                   fluidRow(box(title="Jeremiah Lowhorn")),
                    fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence. The data used in the prediction can be changed by the 'Add/Remove Datasets' check box below.")),
                    fluidRow(box(title="Add/Remove Datasets",
-                                checkboxGroupInput("rmv","Add/Remove Datasets",choices=c("Twitter","News","Blogs"),selected=c("Twitter","News","Blogs"))))),
+                                checkboxGroupInput("rmv","Add/Remove Datasets",choices=c("Twitter","News","Blogs"),selected=c("Twitter","News","Blogs"))))
+                   ),
             column(8,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
         #    fluidRow(box(title="Word Additions","Press the button in the word prediction box to add it to the sentence.")),
             fluidRow(box(title="Word Prediction",actionButton("addword",textOutput("word")))),
