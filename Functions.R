@@ -1,45 +1,83 @@
-build_tables <- function(text,size) {
-  
-  n2 <- Make_Ngrams(text,size=size)
-  
-  n2_df <- table(n2)
-  n2_df<- as.data.frame(n2_df) %>%
-    arrange(desc(Freq))
-  
-  n2_df$n2 <- as.character(n2_df$n2)
-  Freq <- n2_df$Freq
-  
-  table <-data.frame((str_split_fixed(n2_df$n2, ' (?=[^ ]+$)',2)),stringsAsFactors=FALSE)
-  table <- cbind(table,Freq)
-  table
-}
-
-Trim <- function( x ) {
-  gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
-}
-
-clean <- function(text) {
-  text <- gsub(pattern=';|\\.|!|\\?', x=text, replacement='ootoo')
-  text <- str_replace_all(text, "[[:punct:]]", "")
-  text <- gsub(pattern="[^[:alpha:]]", x=text, replacement = ' ')
-  text <- tolower(text)
-  #text <- gsub(pattern="\\W*\\b\\w{1,2}\\b", x=text, replacement=' ')
-  text <- gsub(pattern="\\s+", x=text, replacement=' ')
-  text <- unlist(strsplit(x=text, split='ootoo',fixed = TRUE))
-  text <- gsub(pattern=paste0('\\<',profanity,collapse="|"),
-               x=text,
-               replacement="")
-  text
-}
-
-Make_Ngrams <- function(sentence_splits, size=2) {
-  ngrams <- c()
-  for (sentence in sentence_splits) {
-    sentence <- Trim(sentence)
-    if ((nchar(sentence) > 0) && (sapply(gregexpr("\\W+", sentence), length) >= size)) {
-      ngs <- ngram(sentence , n=size)
-      ngrams <- c(ngrams, get.ngrams(ngs))
-    }
+five_gram <- reactive({
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
+    twitter <- twitter_n5
+  } else{
+    twitter <- NULL
   }
-  return (ngrams)
-}
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    blogs <- blogs_n5
+  } else{
+    blogs <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    news <- news_n5
+  } else{
+    news <- NULL
+  }
+  five_gram <- rbind(twitter,blogs,news) %>%
+    arrange(desc(Freq))
+  five_gram
+})
+
+four_gram <- reactive({
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
+    twitter <- twitter_n4
+  } else{
+    twitter <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    blogs <- blogs_n4
+  } else{
+    blogs <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    news <- news_n4
+  } else{
+    news <- NULL
+  }
+  four_gram <- rbind(twitter,blogs,news) %>%
+    arrange(desc(Freq))
+  four_gram
+})
+
+three_gram <- reactive({
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
+    twitter <- twitter_n3
+  } else{
+    twitter <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    blogs <- blogs_n3
+  } else{
+    blogs <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    news <- news_n3
+  } else{
+    news <- NULL
+  }
+  three_gram <- rbind(twitter,blogs,news) %>%
+    arrange(desc(Freq))
+  three_gram
+})
+
+two_gram <- reactive({
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Twitter"){
+    twitter <- twitter_n2
+  } else{
+    twitter <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    blogs <- blogs_n2
+  } else{
+    blogs <- NULL
+  }
+  if(input$rmv[1]|input$rmv[2]|input$rmv[3]=="Blogs"){
+    news <- news_n2
+  } else{
+    news <- NULL
+  }
+  two_gram <- rbind(twitter,blogs,news) %>%
+    arrange(desc(Freq))
+  two_gram
+})
