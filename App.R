@@ -15,7 +15,7 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
             column(4,
-                   fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence.")),
+                   fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence. The data used in the prediction can be changed by the 'Add/Remove Datasets' check box below.")),
                    fluidRow(box(title="Add/Remove Datasets",
                                 checkboxGroupInput("rmv","Add/Remove Datasets",choices=c("Twitter","News","Blogs"),selected=c("Twitter","News","Blogs"))))),
             column(8,fluidRow(box(textInput("text", label = h2("Next Word Predictor Input"), value = "Hello how are"))),
@@ -53,17 +53,17 @@ server <- function(input, output, session) {
   
   
   five_gram <- reactive({
-    if(string()%in%"Twitter"){
+    if("Twitter" %in% string()){
       twitter <- twitter_n5
     } else{
       twitter <- NULL
     }
-    if(string()%in%"Blogs"){
+    if("Blogs" %in% string()){
       blogs <- blogs_n5
     } else{
       blogs <- NULL
     }
-    if(string()%in%"News"){
+    if("News" %in% string()){
       news <- news_n5
     } else{
       news <- NULL
@@ -74,17 +74,17 @@ server <- function(input, output, session) {
   })
   
   four_gram <- reactive({
-    if(string()%in%"Twitter"){
+    if("Twitter" %in% string()){
       twitter <- twitter_n4
     } else{
       twitter <- NULL
     }
-    if(string()%in%"Blogs"){
+    if("Blogs" %in% string()){
       blogs <- blogs_n4
     } else{
       blogs <- NULL
     }
-    if(string()%in%"News"){
+    if("News" %in% string()){
       news <- news_n4
     } else{
       news <- NULL
@@ -95,17 +95,17 @@ server <- function(input, output, session) {
   })
   
   three_gram <- reactive({
-    if(string()%in%"Twitter"){
+    if("Twitter" %in% string()){
       twitter <- twitter_n3
     } else{
       twitter <- NULL
     }
-    if(string()%in%"Blogs"){
+    if("Blogs" %in% string()){
       blogs <- blogs_n3
     } else{
       blogs <- NULL
     }
-    if(string()%in%"News"){
+    if("News" %in% string()){
       news <- news_n3
     } else{
       news <- NULL
@@ -116,17 +116,17 @@ server <- function(input, output, session) {
   })
   
   two_gram <- reactive({
-    if(string()%in%"Twitter"){
+    if("Twitter" %in% string()){
       twitter <- twitter_n2
     } else{
       twitter <- NULL
     }
-    if(string()%in%"Blogs"){
+    if("Blogs" %in% string()){
       blogs <- blogs_n2
     } else{
       blogs <- NULL
     }
-    if(string()%in%"News"){
+    if("News" %in% string()){
       news <- news_n2
     } else{
       news <- NULL
