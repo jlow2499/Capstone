@@ -15,7 +15,6 @@ body <- dashboardBody(
   tabItems(
     tabItem(tabName = "word",
             column(4,
-                   fluidRow(box(title="Jeremiah Lowhorn")),
                    fluidRow(box(title="Instructions","Begin typing or press the button in the word prediction box to add it to the sentence. The data used in the prediction can be changed by the 'Add/Remove Datasets' check box below.")),
                    fluidRow(box(title="Add/Remove Datasets",
                                 checkboxGroupInput("rmv","Add/Remove Datasets",choices=c("Twitter","News","Blogs"),selected=c("Twitter","News","Blogs"))))
@@ -27,6 +26,7 @@ body <- dashboardBody(
     ),
     tabItem(tabName = "info",
             column(12,
+                   box(title="By: Jeremiah Lowhorn"),
                    box(title="Synopsis","This application is for the Johns Hopkins Coursera Data Science Capstone. We are provided with a text corpus that we are to perform exploratory analysis upon and use in model building for our word prediction algorithm which is found in the 'Word predictor' tab. The text contains special characters, unneeded spaces, and profanity that must first be removed. The text comes from a document of Tweets, news articles, and blog posts. R's base package functions and regular expressions are used in this analysis to clean the data and make it ready to split into n-gram models. The n-grams are used to predict the next word in the sentence based upon the user's input."),
                    (box(title="Methodology","This application parses out the words in the written sentence to build one, two, three, or four grams. These ngrams are then used to subset dataframes where the first column is n-1 words and the second column is the last word in the ngram.")),
                    (box(title="Stop Words","Stop words are words that refer to the most common words in a language. In our case words such as 'the' & 'and' would be considered stop words. For this application stop words are not removed from the ngrams unless the previous word in the sentence is a stop word. Then the dataframes are reactively subset to remove the stop words")),
